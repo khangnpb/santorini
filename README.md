@@ -1,2 +1,2 @@
-# IdeaIdea
+# Idea
 ![](./idea.jpg)

@@ -6862,6 +6862,13 @@ MonoBehaviour:
   _board: {fileID: 1415650741}
   _camera: {fileID: 963194229}
   _input: {fileID: 1850294214}
+  _PLAYERS:
+  - colour: 1
+    non_player: 1
+  - colour: 2
+    non_player: 0
+  - colour: 1
+    non_player: 0
 --- !u!4 &1299820491
 Transform:
   m_ObjectHideFlags: 0
@@ -7625,6 +7632,18 @@ MonoBehaviour:
     colour: 1
     prefab: {fileID: 8913242481601427647, guid: a6159057a6edcdb4d97647248e28a87b,
       type: 3}
+  - gender: 1
+    colour: 2
+    prefab: {fileID: 136961733957461417, guid: d15a2c9de65a8054fa4b943a0894cf68, type: 3}
+  - gender: 0
+    colour: 2
+    prefab: {fileID: 136961733957461417, guid: d15a2c9de65a8054fa4b943a0894cf68, type: 3}
+  - gender: 1
+    colour: 3
+    prefab: {fileID: 136961733957461417, guid: ce73eba8222bfd14b87bb8d2c6b727ae, type: 3}
+  - gender: 0
+    colour: 3
+    prefab: {fileID: 136961733957461417, guid: ce73eba8222bfd14b87bb8d2c6b727ae, type: 3}
   _groundWorkerPosition: {fileID: 596148434}
   _level1WorkerPosition: {fileID: 191646712}
   _level2WorkerPosition: {fileID: 1081941943}

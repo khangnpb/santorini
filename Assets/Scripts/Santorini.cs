@@ -14,17 +14,40 @@ public class Santorini : MonoBehaviour
     [SerializeField]
     InputSystem _input = default;
 
+    [System.SerializableAttribute]
+    struct SetPlayer
+    {
+#pragma warning disable 0649
+        public Worker.Colour colour;       
+        public bool non_player;
+#pragma warning restore 0649
+    }
+
+    [Header("Set Player")]
+    [SerializeField]
+    List<SetPlayer> _PLAYERS = default;
+
+
     List<Player> _players = default;
     Player _activePlayer = null;
 
     void Start()
     {
-        _players = new List<Player>() { new Player(), new Player() };
+        _players = new List<Player>();
+
+        for (int i =0; i < _PLAYERS.Count; i++)
+        {
+            _players.Add(new Player());
+            if (_PLAYERS[i].non_player)
+            {
+                _players[i].Initialize(_input, _board, _PLAYERS[i].colour,true);
+            }
+            else
+            {
+                _players[i].Initialize(_input, _board, _PLAYERS[i].colour,false);
+            };
+        }
         _activePlayer = _players[0];
-
-        _players[0].Initialize(_input, _board, Worker.Colour.Blue);
-        _players[1].Initialize(_input, _board, Worker.Colour.White);
-
         _board.OnStart(_players);
     }
 
@@ -94,11 +117,13 @@ public class Santorini : MonoBehaviour
     {
         //TODO: Any players that haven't placed all their workers should be prioritized
 
-        if (_players[0] == _activePlayer)
+        for(int i =0 ; i < _players.Count; i++)
         {
-            return _players[1];
+            if (_players[i] == _activePlayer)
+            {
+                return _players[(i+1)% _players.Count];
+            }
         }
-
         return _players[0];
     }
 }

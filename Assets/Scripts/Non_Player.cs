@@ -3,12 +3,73 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Computer : Player
+public class Non_Player 
 {
-    // Computer impliment
-    public void UpdatePlayer(bool activeComputer)
+    public enum StateId
     {
-        if (!activeComputer)
+        Waiting = 0,
+        Placing = 1,
+        Selecting = 2,
+        Moving = 3,
+        Building = 4,
+        WaitingOnConfirmation = 5,
+        DoneTurn = 6
+    }
+
+    public StateMachine _stateMachine = default;
+
+    protected InputSystem _input = default;
+    protected Board _board = default;
+
+    public bool _isCom = false;
+    public God _god = default;
+    public List<Worker> _workers = default;
+    public Worker.Colour _colour = default;
+
+    public Worker _selectedWorker = default;
+    public bool _hasLost = false;
+
+
+    public void Initialize(InputSystem input, Board board, Worker.Colour colour, bool isCom = false)
+    {
+        _isCom = isCom;
+        _input = input;
+        _board = board;
+        _workers = new List<Worker>();
+        _colour = colour;
+
+        _god = new BaseGod();
+
+        _stateMachine = new StateMachine();
+        _stateMachine.Initialize(input, board);
+
+        WaitingState waitingState = new WaitingState();
+        _stateMachine.RegisterState(waitingState);
+
+        PlacingState placingState = new PlacingState();
+        _stateMachine.RegisterState(placingState);
+
+        SelectingState selectingState = new SelectingState();
+        _stateMachine.RegisterState(selectingState);
+
+        MovingState movingState = new MovingState();
+        _stateMachine.RegisterState(movingState);
+
+        BuildingState buildingState = new BuildingState();
+        _stateMachine.RegisterState(buildingState);
+
+        WaitingOnConfirmationState waitingOnConfirmationState = new WaitingOnConfirmationState();
+        _stateMachine.RegisterState(waitingOnConfirmationState);
+
+        DoneTurnState doneTurnState = new DoneTurnState();
+        _stateMachine.RegisterState(doneTurnState);
+
+        _stateMachine.SetState((int)StateId.Waiting);
+    }
+
+    public void UpdatePlayer(bool activePlayer)
+    {
+        if (!activePlayer)
         {
             return;
         }
@@ -16,9 +77,8 @@ public class Computer : Player
         _stateMachine.UpdateCurrentState();
     }
 
-    
-     
-    public bool PreventsWin(Computer opponent)
+
+    public bool PreventsWin(Player opponent)
     {
         return _god.PreventsWin(opponent);
     }

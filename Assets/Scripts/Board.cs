@@ -113,14 +113,6 @@ public class Board : MonoBehaviour
             _playerHUD.DisableEndTurnButton();
         }
 
-        if(_activePlayer.IsBuilding() || _activePlayer.IsWaitingOnConfirmation())
-        {
-            _playerHUD.EnableUndoTurnButton();
-        }
-        else
-        {
-            _playerHUD.DisableUndoTurnButton();
-        }
     }
 
     public bool PressedEndTurn()

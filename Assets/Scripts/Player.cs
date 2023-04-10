@@ -29,7 +29,7 @@ public class Player
     public bool _hasLost = false;
 
 
-    public void Initialize(InputSystem input, Board board, Worker.Colour colour, bool isCom = false)
+    public void Initialize(InputSystem input, Board board, Worker.Colour colour, bool isCom)
     {
         _isCom = isCom;
         _input = input;

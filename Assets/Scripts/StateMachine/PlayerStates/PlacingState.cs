@@ -20,10 +20,12 @@ public class PlacingState : State
             return (int)Player.StateId.Selecting;
         }
 
-        if (!input.Mouse0ClickedOnBoard()) { return -1; }
 
-        Vector3 clickedPosition = input.GetMouse0ClickedPositionBoard();
+        if (!activePlayer._isCom && !input.Mouse0ClickedOnBoard()) { return -1; }
+        
+        Vector3 clickedPosition = activePlayer._isCom ? new Vector3(Random.Range(-15f, 15f), 16f, Random.Range(-15f, 15f)) : input.GetMouse0ClickedPositionBoard();
         Tile nearestTileToClick = board.GetNearestTileToPosition(clickedPosition);
+        Debug.Log(nearestTileToClick);
 
         if (activePlayer.GetGod().AllowsMove(nearestTileToClick) && board.OpponentsAllowMove(nearestTileToClick))
         {
@@ -35,6 +37,11 @@ public class PlacingState : State
 
             if (activePlayer.GetGod().DonePlacingThisTurn())
             {
+                if (activePlayer._isCom)
+                {
+                    return (int)Player.StateId.DoneTurn;
+                }
+
                 return (int)Player.StateId.WaitingOnConfirmation;
             }
         }

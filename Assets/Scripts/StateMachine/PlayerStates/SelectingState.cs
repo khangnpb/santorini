@@ -17,11 +17,11 @@ public class SelectingState : State
 
     public override int UpdateState(InputSystem input, Board board)
     {
-        if(!input.Mouse0ClickedOnBoard()) { return -1; }
-
-        Vector3 clickedPosition = input.GetMouse0ClickedPositionBoard();
-        Tile nearestTileToClick = board.GetNearestTileToPosition(clickedPosition);
         Player activePlayer = board.GetActivePlayer();
+        if (!activePlayer._isCom && !input.Mouse0ClickedOnBoard()) { return -1; }
+        Vector3 clickedPosition = activePlayer._isCom ? new Vector3(Random.Range(-25f, 25f), 16f, Random.Range(-25f, 25f)) : input.GetMouse0ClickedPositionBoard();
+        
+        Tile nearestTileToClick = board.GetNearestTileToPosition(clickedPosition);
 
         Worker selectedWorker = board.GetNearestTileToPosition(clickedPosition).GetWorkerOnTile();
         if(activePlayer.TrySelectWorker(selectedWorker))

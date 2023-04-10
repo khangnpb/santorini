@@ -17,6 +17,10 @@ public class WaitingOnConfirmationState : State
         {
             return (int)Player.StateId.DoneTurn;
         }
+        if (board.PressedUndoTurn())
+        {
+            Debug.Log("undo");
+        }
 
         return -1;
     }

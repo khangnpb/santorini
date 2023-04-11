@@ -16,7 +16,9 @@ public class Worker : MonoBehaviour
     public enum Colour
     {
         Blue, 
-        White
+        White,
+        Red,
+        Green
     }
     
     [SerializeField]

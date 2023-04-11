@@ -1,4 +1,3 @@
-﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,20 +15,23 @@ public class Player
         DoneTurn = 6
     }
 
-    StateMachine _stateMachine = default;
+    public StateMachine _stateMachine = default;
 
     protected InputSystem _input = default;
     protected Board _board = default;
 
-    God _god = default;
-    List<Worker> _workers = default;
-    Worker.Colour _colour = default;
+    public bool _isCom = false;
+    public God _god = default;
+    public List<Worker> _workers = default;
+    public Worker.Colour _colour = default;
 
-    Worker _selectedWorker = default;
-    bool _hasLost = false;
+    public Worker _selectedWorker = default;
+    public bool _hasLost = false;
 
-    public void Initialize(InputSystem input, Board board, Worker.Colour colour)
+
+    public void Initialize(InputSystem input, Board board, Worker.Colour colour, bool isCom)
     {
+        _isCom = isCom;
         _input = input;
         _board = board;
         _workers = new List<Worker>();
@@ -48,7 +50,7 @@ public class Player
 
         SelectingState selectingState = new SelectingState();
         _stateMachine.RegisterState(selectingState);
-        
+
         MovingState movingState = new MovingState();
         _stateMachine.RegisterState(movingState);
 
@@ -73,6 +75,7 @@ public class Player
 
         _stateMachine.UpdateCurrentState();
     }
+
 
     public bool PreventsWin(Player opponent)
     {
@@ -116,13 +119,13 @@ public class Player
 
     public bool HasAvailableMove()
     {
-        foreach(Worker worker in _workers)
+        foreach (Worker worker in _workers)
         {
             List<Tile> possibleMoves = _board.GetAvailableMoves(worker);
 
-            foreach(Tile tile in possibleMoves)
+            foreach (Tile tile in possibleMoves)
             {
-                if(_god.AllowsMove(tile, worker))
+                if (_god.AllowsMove(tile, worker))
                 {
                     return true;
                 }
@@ -131,10 +134,10 @@ public class Player
 
         return false;
     }
-    
+
     public void FinalizeTurn()
     {
-        if(_god.DonePlacing())
+        if (_god.DonePlacing())
         {
             _god.EnableRealTurns();
         }
@@ -144,7 +147,7 @@ public class Player
 
     public bool TrySelectWorker(Worker worker)
     {
-        if(_workers.Contains(worker))
+        if (_workers.Contains(worker))
         {
             _selectedWorker = worker;
             return true;
@@ -180,6 +183,6 @@ public class Player
 
     public Player.StateId GetCurrentState()
     {
-        return (Player.StateId) _stateMachine.GetCurrentStateId();
+        return (Player.StateId)_stateMachine.GetCurrentStateId();
     }
 }

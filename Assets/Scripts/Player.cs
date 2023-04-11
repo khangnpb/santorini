@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-using namespace CustomPlayer
+namespace CustomPlayer
 {
     public class Player
     {

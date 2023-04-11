@@ -16,6 +16,11 @@ public class MainMenu : MonoBehaviour
 
     [SerializeField] private TMP_InputField nickNameField;
 
+    [Header("Screen Gameobjects")]
+    [SerializeField] public GameObject MainScreen;
+    [SerializeField] public GameObject ConnectScreen;
+    [SerializeField] public GameObject TeamSelectionScreen;
+
     public void PlayGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
@@ -24,6 +29,8 @@ public class MainMenu : MonoBehaviour
     public void OnConnect()
     {
         networkManager.Connect();
+        // networkManager.hideConfirmButton();
+        
     }
 
     public void SetConnectionStatusText(string status)

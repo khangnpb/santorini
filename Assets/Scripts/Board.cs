@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using TMPro;
+using CustomPlayer;
 
 public class Board : MonoBehaviour
 {

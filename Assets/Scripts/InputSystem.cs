@@ -9,7 +9,21 @@ public class InputSystem : MonoBehaviour
     bool _mouse0ClickedBoard = false;
     Vector3 _mouse0ClickedPositionScreen = default;
     Vector3 _mouse0ClickedPositionBoard = default;
-   
+    
+
+    public void setValue(bool val1, bool val2, Vector3 val3, Vector3 val4)
+    {
+        ResetMouse0Click();
+        _mouse0ClickedThisFrame = val1;
+        _mouse0ClickedBoard = val2;
+        _mouse0ClickedPositionScreen = val3;
+        _mouse0ClickedPositionBoard = val4;
+    }
+
+    public void reset()
+    {
+        ResetMouse0Click();
+    }
     public void OnUpdate()
     {
         ResetMouse0Click();

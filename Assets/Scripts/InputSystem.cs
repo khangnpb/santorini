@@ -8,7 +8,16 @@ public class InputSystem : MonoBehaviour
     bool _mouse0ClickedBoard = false;
     Vector3 _mouse0ClickedPositionScreen = default;
     Vector3 _mouse0ClickedPositionBoard = default;
-   
+
+    public void setValue(bool val1, bool val2, Vector3 val3, Vector3 val4)
+    {
+        ResetMouse0Click();
+        _mouse0ClickedThisFrame = val1;
+        _mouse0ClickedBoard = val2;
+        _mouse0ClickedPositionScreen = val3;
+        _mouse0ClickedPositionBoard = val4;
+    }
+
     public void OnUpdate()
     {
         ResetMouse0Click();
@@ -18,6 +27,9 @@ public class InputSystem : MonoBehaviour
         {
             _mouse0ClickedPositionScreen = Input.mousePosition;
             Ray ray = Camera.main.ScreenPointToRay(_mouse0ClickedPositionScreen);
+
+            ///Debug.Log("Line 22 of InputSystem.cs: " + ray.origin + " " + ray.direction);//
+
             RaycastHit hit;
             float raycastDistance = 150f;
             if (Physics.Raycast(ray, out hit, raycastDistance))

@@ -14,7 +14,6 @@ public class BuildingState : State
     public override int UpdateState(InputSystem input, Board board)
     {
         if (!input.Mouse0ClickedOnBoard()) { return -1; }
-
         Vector3 clickedPosition = input.GetMouse0ClickedPositionBoard();
         Tile nearestTileToClick = board.GetNearestTileToPosition(clickedPosition);
         Player activePlayer = board.GetActivePlayer();

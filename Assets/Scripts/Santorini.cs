@@ -41,9 +41,9 @@ public class Santorini : MonoBehaviour
     List<Player> _players = default;
     Player _activePlayer = null;
 
-    public int turn = 0;
-    public bool flag = false;
-
+    public int turn = 0;//test
+    public bool flag = false;//Dùng để check xem nút end turn được bấm bởi người chơi hay bởi message từ server or client
+    
     void Start()
     {
         _players = new List<Player>();
@@ -74,6 +74,7 @@ public class Santorini : MonoBehaviour
             _input.OnUpdate();
             _board.OnUpdate(_activePlayer);
             _camera.OnUpdate(_input.Mouse1Clicked(), _input.GetMouseScrollDeltaY(), _board.transform);
+            
             //check win or lost
             foreach (Player player in _players)
             {
@@ -143,9 +144,7 @@ public class Santorini : MonoBehaviour
                     }
                     else Debug.Log("No connection");
                 }
-
                 player.UpdatePlayer(player == _activePlayer);
-                
             }
 
             if (_activePlayer.IsDoneTurn())
@@ -164,11 +163,9 @@ public class Santorini : MonoBehaviour
                 _activePlayer.FinalizeTurn();
                 _activePlayer = GetNextPlayer();
                 flag = false;
-                Debug.Log("Turn: " + turn.ToString());
+                Debug.Log("End turn!");
                 turn++;
-                
             }
-
         }
         catch (System.Exception e)
         {
@@ -179,7 +176,7 @@ public class Santorini : MonoBehaviour
 
     void OnMessage(InputMessage inputMsg)
     {
-        //if(NetworkServer.active) return;
+        if(NetworkServer.active) return;
         if(inputMsg.clickEndTurn) 
         {
             GameObject buttonObject = GameObject.Find("End Turn Button");
@@ -196,6 +193,41 @@ public class Santorini : MonoBehaviour
             inputMsg.mouse0ClickedBoard, 
             inputMsg.mouse0ClickedPositionScreen, 
             inputMsg.mouse0ClickedPositionBoard);
+        foreach (Player player in _players)
+        {
+            if(player.HasWon())
+            {
+                bool canWin = true;
+                foreach (Player otherPlayer in _players)
+                {
+                    if(otherPlayer.PreventsWin(player))
+                    {
+                        canWin = false;
+                        break;
+                    }
+                }
+
+                if (canWin)
+                {
+                    Debug.Log("You Win!!!");
+#if UNITY_EDITOR
+                    UnityEditor.EditorApplication.ExitPlaymode();
+#endif
+                }
+                else
+                {
+                    Debug.Log("An opponent prevented your win! D:");
+                }
+            }
+
+            if(player.HasLost())
+            {
+                Debug.Log("You lose!!!");
+#if UNITY_EDITOR
+                UnityEditor.EditorApplication.ExitPlaymode();
+#endif
+            }
+        }
         foreach (Player player in _players)
             player.UpdatePlayer(player == _activePlayer);
         if (_activePlayer.IsDoneTurn())
@@ -221,11 +253,46 @@ public class Santorini : MonoBehaviour
             else Debug.Log("Button not found");
             return;
         }
-        Debug.Log("Received message from Client");
+        Debug.Log("Received message from Server");
         _input.setValue(inputMsg.mouse0ClickedThisFrame, 
             inputMsg.mouse0ClickedBoard, 
             inputMsg.mouse0ClickedPositionScreen, 
             inputMsg.mouse0ClickedPositionBoard);
+        foreach (Player player in _players)
+        {
+            if(player.HasWon())
+            {
+                bool canWin = true;
+                foreach (Player otherPlayer in _players)
+                {
+                    if(otherPlayer.PreventsWin(player))
+                    {
+                        canWin = false;
+                        break;
+                    }
+                }
+
+                if (canWin)
+                {
+                    Debug.Log("You Win!!!");
+#if UNITY_EDITOR
+                    UnityEditor.EditorApplication.ExitPlaymode();
+#endif
+                }
+                else
+                {
+                    Debug.Log("An opponent prevented your win! D:");
+                }
+            }
+
+            if(player.HasLost())
+            {
+                Debug.Log("You lose!!!");
+#if UNITY_EDITOR
+                UnityEditor.EditorApplication.ExitPlaymode();
+#endif
+            }
+        }
         foreach (Player player in _players)
             player.UpdatePlayer(player == _activePlayer);
         if (_activePlayer.IsDoneTurn())

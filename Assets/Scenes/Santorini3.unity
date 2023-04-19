@@ -6871,6 +6871,8 @@ MonoBehaviour:
     non_player: 1
   - colour: 0
     non_player: 1
+  turn: 0
+  flag: 0
 --- !u!4 &1299820491
 Transform:
   m_ObjectHideFlags: 0

@@ -41,10 +41,12 @@ public class BuildingState : State
             int maxValue = 0;
             for (int x = 0; x < intList.Count; x++)
             {
-                if (intList[x] > maxValue && intList[x] != 4)
+                if (intList[x] > maxValue && intList[x] != 4 )
                 {
+                    if (!(intList[x] == 2 && (int)selectedWorker.GetTile().GetLevel() < 2))
                     maxValue = intList[x];
                 }
+                
             }
 
             Tile.Level maxlevel = (Tile.Level)maxValue;

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using TMPro;
 
 public class AutoHostClient : MonoBehaviour
 {
@@ -10,7 +11,8 @@ public class AutoHostClient : MonoBehaviour
 
     public void JoinLocal()
     {
-        networkManager.networkAddress = "localhost";
+        string hostName = GameObject.Find("HostName").GetComponent<TMP_InputField>().text;
+        networkManager.networkAddress = hostName;
         networkManager.StartClient();
     }
 

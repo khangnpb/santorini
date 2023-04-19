@@ -20,15 +20,42 @@ public class SelectingState : State
     {
         Player activePlayer = board.GetActivePlayer();
         if (!activePlayer._isCom && !input.Mouse0ClickedOnBoard()) { return -1; }
-        Vector3 clickedPosition = activePlayer._isCom ? new Vector3(Random.Range(-20f, 20f), 16f, Random.Range(-20f, 20f)) : input.GetMouse0ClickedPositionBoard();
-        
-        Tile nearestTileToClick = board.GetNearestTileToPosition(clickedPosition);
 
-        Worker selectedWorker = board.GetNearestTileToPosition(clickedPosition).GetWorkerOnTile();
-        if(activePlayer.TrySelectWorker(selectedWorker))
+        if (activePlayer._isCom)
         {
-            selectedWorker.EnableHighlight();
-            return (int)Player.StateId.Moving;
+            List < Worker > workers = new List<Worker>();
+            for (float x = -20f; x <= 20f; x += 10f)
+            {
+                for (float y = -20f; y <= 20f; y += 10f)
+                {
+                    Worker selectedWorker = board.GetNearestTileToPosition(new Vector3(x, 16f, y)).GetWorkerOnTile();
+                    if (activePlayer.TrySelectWorker(selectedWorker))
+                    {
+                        workers.Add(selectedWorker);
+                    }
+                }
+            }
+            if ((int)workers[0].GetTile().GetLevel() >= (int)workers[1].GetTile().GetLevel())
+            {
+                    workers[0].EnableHighlight();
+                    return (int)Player.StateId.Moving;
+             }
+            else
+            {
+                workers[1].EnableHighlight();
+                return (int)Player.StateId.Moving;
+            }
+        }
+        else
+        {
+            Vector3 clickedPosition =  input.GetMouse0ClickedPositionBoard();       
+            Tile nearestTileToClick = board.GetNearestTileToPosition(clickedPosition);
+            Worker selectedWorker = board.GetNearestTileToPosition(clickedPosition).GetWorkerOnTile();
+            if (activePlayer.TrySelectWorker(selectedWorker))
+            {
+                selectedWorker.EnableHighlight();
+                return (int)Player.StateId.Moving;
+            }
         }
 
         return -1;

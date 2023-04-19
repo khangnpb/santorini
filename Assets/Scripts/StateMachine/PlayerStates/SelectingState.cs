@@ -20,7 +20,7 @@ public class SelectingState : State
     {
         Player activePlayer = board.GetActivePlayer();
         if (!activePlayer._isCom && !input.Mouse0ClickedOnBoard()) { return -1; }
-        Vector3 clickedPosition = activePlayer._isCom ? new Vector3(Random.Range(-25f, 25f), 16f, Random.Range(-25f, 25f)) : input.GetMouse0ClickedPositionBoard();
+        Vector3 clickedPosition = activePlayer._isCom ? new Vector3(Random.Range(-20f, 20f), 16f, Random.Range(-20f, 20f)) : input.GetMouse0ClickedPositionBoard();
         
         Tile nearestTileToClick = board.GetNearestTileToPosition(clickedPosition);
 
